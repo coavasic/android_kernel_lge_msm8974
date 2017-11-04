@@ -996,6 +996,11 @@ int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
 	/* Remove an active timer from the queue: */
 	ret = remove_hrtimer(timer, base);
 
+	/* Switch the timer base, if necessary: */
+	new_base = switch_hrtimer_base(timer, base, mode & HRTIMER_MODE_PINNED);
+
+
+
 	if (mode & HRTIMER_MODE_REL) {
 		tim = ktime_add_safe(tim, base->get_time());
 		/*
