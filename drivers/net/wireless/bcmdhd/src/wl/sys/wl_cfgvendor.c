@@ -125,7 +125,7 @@ static int wl_cfgvendor_send_cmd_reply(struct wiphy *wiphy,
 }
 
 static int wl_cfgvendor_get_feature_set(struct wiphy *wiphy,
-	struct wireless_dev *wdev, const void  *data, int len)
+	struct wireless_dev *wdev,  void  *data, int len)
 {
 	int err = 0;
 	struct bcm_cfg80211 *cfg = wiphy_priv(wiphy);
@@ -143,7 +143,7 @@ static int wl_cfgvendor_get_feature_set(struct wiphy *wiphy,
 }
 
 static int wl_cfgvendor_get_feature_set_matrix(struct wiphy *wiphy,
-	struct wireless_dev *wdev, const void  *data, int len)
+	struct wireless_dev *wdev,  void  *data, int len)
 {
 	int err = 0;
 	struct bcm_cfg80211 *cfg = wiphy_priv(wiphy);
@@ -185,7 +185,7 @@ exit:
 }
 
 static int wl_cfgvendor_set_pno_mac_oui(struct wiphy *wiphy,
-	struct wireless_dev *wdev, const void  *data, int len)
+	struct wireless_dev *wdev,  void  *data, int len)
 {
 	int err = 0;
 	struct bcm_cfg80211 *cfg = wiphy_priv(wiphy);
@@ -264,7 +264,7 @@ int wl_cfgvendor_send_hotlist_event(struct wiphy *wiphy,
 
 
 static int wl_cfgvendor_gscan_get_capabilities(struct wiphy *wiphy,
-	struct wireless_dev *wdev, const void  *data, int len)
+	struct wireless_dev *wdev,  void  *data, int len)
 {
 	int err = 0;
 	struct bcm_cfg80211 *cfg = wiphy_priv(wiphy);
@@ -291,7 +291,7 @@ static int wl_cfgvendor_gscan_get_capabilities(struct wiphy *wiphy,
 }
 
 static int wl_cfgvendor_gscan_get_channel_list(struct wiphy *wiphy,
-	struct wireless_dev *wdev, const void  *data, int len)
+	struct wireless_dev *wdev,  void  *data, int len)
 {
 	int err = 0, type, band;
 	struct bcm_cfg80211 *cfg = wiphy_priv(wiphy);
@@ -339,7 +339,7 @@ exit:
 }
 
 static int wl_cfgvendor_gscan_get_batch_results(struct wiphy *wiphy,
-	struct wireless_dev *wdev, const void  *data, int len)
+	struct wireless_dev *wdev,  void  *data, int len)
 {
 	int err = 0;
 	struct bcm_cfg80211 *cfg = wiphy_priv(wiphy);
@@ -424,7 +424,7 @@ static int wl_cfgvendor_gscan_get_batch_results(struct wiphy *wiphy,
 }
 
 static int wl_cfgvendor_initiate_gscan(struct wiphy *wiphy,
-	struct wireless_dev *wdev, const void  *data, int len)
+	struct wireless_dev *wdev,  void  *data, int len)
 {
 	int err = 0;
 	struct bcm_cfg80211 *cfg = wiphy_priv(wiphy);
@@ -455,7 +455,7 @@ static int wl_cfgvendor_initiate_gscan(struct wiphy *wiphy,
 }
 
 static int wl_cfgvendor_enable_full_scan_result(struct wiphy *wiphy,
-	struct wireless_dev *wdev, const void  *data, int len)
+	struct wireless_dev *wdev,  void  *data, int len)
 {
 	int err = 0;
 	struct bcm_cfg80211 *cfg = wiphy_priv(wiphy);
@@ -480,7 +480,7 @@ static int wl_cfgvendor_enable_full_scan_result(struct wiphy *wiphy,
 }
 
 static int
-wl_cfgvendor_set_scan_cfg_bucket(const struct nlattr *prev,
+wl_cfgvendor_set_scan_cfg_bucket( struct nlattr *prev,
 	gscan_scan_params_t *scan_param, int num)
 {
 	struct dhd_pno_gscan_channel_bucket  *ch_bucket;
@@ -557,7 +557,7 @@ exit:
 
 static int
 wl_cfgvendor_set_scan_cfg(struct wiphy *wiphy, struct wireless_dev *wdev,
-	const void  *data, int len)
+	 void  *data, int len)
 {
 	int err = 0;
 	struct bcm_cfg80211 *cfg = wiphy_priv(wiphy);
@@ -637,7 +637,7 @@ exit:
 }
 
 static int wl_cfgvendor_hotlist_cfg(struct wiphy *wiphy,
-	struct wireless_dev *wdev, const void  *data, int len)
+	struct wireless_dev *wdev,  void  *data, int len)
 {
 	int err = 0;
 	struct bcm_cfg80211 *cfg = wiphy_priv(wiphy);
@@ -777,7 +777,7 @@ exit:
 	return err;
 }
 static int wl_cfgvendor_set_batch_scan_cfg(struct wiphy *wiphy,
-	struct wireless_dev *wdev, const void  *data, int len)
+	struct wireless_dev *wdev,  void  *data, int len)
 {
 	int err = 0, tmp, type;
 	struct bcm_cfg80211 *cfg = wiphy_priv(wiphy);
@@ -814,7 +814,7 @@ static int wl_cfgvendor_set_batch_scan_cfg(struct wiphy *wiphy,
 }
 
 static int wl_cfgvendor_significant_change_cfg(struct wiphy *wiphy,
-	struct wireless_dev *wdev, const void  *data, int len)
+	struct wireless_dev *wdev,  void  *data, int len)
 {
 	int err = 0;
 	struct bcm_cfg80211 *cfg = wiphy_priv(wiphy);
@@ -986,7 +986,7 @@ exit:
 
 static int
 wl_cfgvendor_rtt_set_config(struct wiphy *wiphy, struct wireless_dev *wdev,
-	const void *data, int len) {
+	 void *data, int len) {
 	int err = 0, rem, rem1, rem2, type;
 	int target_cnt;
 	rtt_config_params_t rtt_param;
@@ -1120,7 +1120,7 @@ exit:
 
 static int
 wl_cfgvendor_rtt_cancel_config(struct wiphy *wiphy, struct wireless_dev *wdev,
-	const void *data, int len)
+	 void *data, int len)
 {
 	int err = 0, rem, type, target_cnt = 0;
 	const struct nlattr *iter;
@@ -1177,7 +1177,7 @@ exit:
 }
 static int
 wl_cfgvendor_rtt_get_capability(struct wiphy *wiphy, struct wireless_dev *wdev,
-	const void *data, int len)
+	 void *data, int len)
 {
 	int err = 0;
 	struct bcm_cfg80211 *cfg = wiphy_priv(wiphy);
@@ -1201,7 +1201,7 @@ exit:
 #endif /* RTT_SUPPORT */
 
 static int wl_cfgvendor_priv_string_handler(struct wiphy *wiphy,
-	struct wireless_dev *wdev, const void  *data, int len)
+	struct wireless_dev *wdev,  void  *data, int len)
 {
 	struct bcm_cfg80211 *cfg = wiphy_priv(wiphy);
 	int err = 0;
@@ -1236,7 +1236,7 @@ static int wl_cfgvendor_priv_string_handler(struct wiphy *wiphy,
 #define NUM_PEER 1
 #define NUM_CHAN 11
 static int wl_cfgvendor_lstats_get_info(struct wiphy *wiphy,
-	struct wireless_dev *wdev, const void  *data, int len)
+	struct wireless_dev *wdev,  void  *data, int len)
 {
 	static char iovar_buf[WLC_IOCTL_MAXLEN];
 	struct bcm_cfg80211 *cfg = wiphy_priv(wiphy);
