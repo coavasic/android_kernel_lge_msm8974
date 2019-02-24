@@ -26,7 +26,7 @@
  *          0: tell VFS to invalidate dentry
  *          1: dentry is valid
  */
-static int sdcardfs_d_revalidate(struct dentry *dentry, struct nameidata *nd)
+static int sdcardfs_d_revalidate(struct dentry *dentry, unsigned int flags)
 {
 	int err = 1;
 	struct path parent_lower_path, lower_path;
@@ -37,7 +37,7 @@ static int sdcardfs_d_revalidate(struct dentry *dentry, struct nameidata *nd)
 	struct inode *inode;
 	struct sdcardfs_inode_data *data;
 
-	if (nd && nd->flags & LOOKUP_RCU)
+	if (flags & LOOKUP_RCU)
 		return -ECHILD;
 
 	spin_lock(&dentry->d_lock);
@@ -51,7 +51,6 @@ static int sdcardfs_d_revalidate(struct dentry *dentry, struct nameidata *nd)
 	 * whether the base obbpath has been changed or not
 	 */
 	if (is_obbpath_invalid(dentry)) {
-		d_drop(dentry);
 		return 0;
 	}
 
@@ -63,14 +62,7 @@ static int sdcardfs_d_revalidate(struct dentry *dentry, struct nameidata *nd)
 	lower_cur_parent_dentry = dget_parent(lower_dentry);
 
 	if ((lower_dentry->d_flags & DCACHE_OP_REVALIDATE)) {
-		struct path ptmp;
-		if (nd) {
-			pathcpy(&ptmp, &nd->path);
-			pathcpy(&nd->path, &lower_path);
-		}
-		err = lower_dentry->d_op->d_revalidate(lower_dentry, nd);
-		if (nd)
-			pathcpy(&nd->path, &ptmp);
+		err = lower_dentry->d_op->d_revalidate(lower_dentry, flags);
 		if (err == 0) {
 			d_drop(dentry);
 			goto out;
@@ -138,6 +130,8 @@ out:
 
 static void sdcardfs_d_release(struct dentry *dentry)
 {
+	if (!dentry || !dentry->d_fsdata)
+		return;
 	/* release and reset the lower paths */
 	if (has_graft_path(dentry))
 		sdcardfs_put_reset_orig_path(dentry);

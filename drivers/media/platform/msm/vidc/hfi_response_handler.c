@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2012-2016, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -1302,8 +1302,8 @@ u32 hfi_process_msg_packet(
 {
 	u32 rc = 0;
 	struct hal_session *sess = NULL;
-	if (!callback || !msg_hdr || msg_hdr->size <
-		VIDC_IFACEQ_MIN_PKT_SIZE) {
+	if (!callback || !session_lock || !msg_hdr ||
+			msg_hdr->size <	VIDC_IFACEQ_MIN_PKT_SIZE) {
 		dprintk(VIDC_ERR, "hal_process_msg_packet:bad"
 			"packet/packet size: %d", msg_hdr->size);
 		rc = -EINVAL;
